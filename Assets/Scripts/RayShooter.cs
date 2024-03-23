@@ -6,20 +6,30 @@ public class RayShooter : MonoBehaviour
 {
     private Camera _camera;
 
+    public GameObject sniperScope;
+    public bool sniperMode = false;
+
+    [SerializeField] private int cursorSize;
+    [SerializeField] private Texture cursorTexture;
+
     // Start is called before the first frame update
     void Start()
     {
         _camera = GetComponent<Camera>();
+        sniperScope.GetComponent<Renderer>().enabled = false;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void OnGUI()
     {
-        int size = 12;
-        float posX = _camera.pixelWidth / 2 - size / 4;
-        float posY = _camera.pixelHeight / 2 - size / 2;
-        GUI.Label(new Rect(posX, posY, size, size), "*");
+        if(!sniperMode)
+        {
+            int x = Screen.width / 2 - cursorSize / 2;
+            int y = Screen.height / 2 - cursorSize / 2;
+            GUI.DrawTexture(new Rect(x, y, cursorSize, cursorSize), cursorTexture);
+        }
     }
 
     // Update is called once per frame
@@ -45,7 +55,32 @@ public class RayShooter : MonoBehaviour
                 }
             }
         }
-        
+
+        if (Input.GetMouseButtonDown(1) && !sniperMode)
+        {
+            _camera.fieldOfView = 10;
+            MouseLook sensVert= GetComponent<MouseLook>();
+            sensVert.sensitivityVer = 1f;
+
+            sniperScope.GetComponent<Renderer>().enabled = true;
+
+            PlayerCharacter player = GetComponentInParent<PlayerCharacter>();
+            MouseLook sensHor = player.GetComponent<MouseLook>();
+            sensHor.sensitivityHor = 1f;
+            sniperMode = true;
+        }else if(Input.GetMouseButtonDown(1) && sniperMode)
+        {
+            _camera.fieldOfView = 60;
+            MouseLook sensVert= GetComponent<MouseLook>();
+            sensVert.sensitivityVer = 9f;
+
+            sniperScope.GetComponent<Renderer>().enabled = false;
+
+            PlayerCharacter player = GetComponentInParent<PlayerCharacter>();
+            MouseLook sensHor = player.GetComponent<MouseLook>();
+            sensHor.sensitivityHor = 9f;
+            sniperMode = false;
+        }
     }
 
     private IEnumerator SphereIndicator(Vector3 pos)
