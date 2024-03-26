@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Virtual-Reality.sln"
+    "dotnet.defaultSolution": "Virtual Reality.sln"
 }
