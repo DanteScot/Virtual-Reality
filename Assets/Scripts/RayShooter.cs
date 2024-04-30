@@ -18,8 +18,8 @@ public class RayShooter : MonoBehaviour
         _camera = GetComponent<Camera>();
         sniperScope.GetComponent<Renderer>().enabled = false;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
 
     void OnGUI()
